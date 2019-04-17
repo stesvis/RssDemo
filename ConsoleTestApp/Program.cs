@@ -75,10 +75,10 @@ namespace ConsoleTestApp
                         rssSubNode = rssNode.SelectSingleNode("pubDate");
                         var publishDate = rssSubNode?.InnerText;
 
-                        rssSubNode = rssNode.SelectSingleNode("//dc:creator", namespaces);
+                        rssSubNode = rssNode.SelectSingleNode(".//dc:creator", namespaces);
                         var creator = rssSubNode?.InnerText;
 
-                        rssSubNode = rssNode.SelectSingleNode("//content:encoded", namespaces);
+                        rssSubNode = rssNode.SelectSingleNode(".//content:encoded", namespaces);
                         var content = rssSubNode?.InnerText;
 
                         //Handling categories list
