@@ -17,7 +17,7 @@ namespace ConsoleTestApp
 
         public ICollection<string> Categories { get; set; }
         public string Creator { get; set; }
-        public string PublishDate { get; set; }
+        public DateTime? PublishDate { get; set; }
         public string Description { get; set; }
         public string Content { get; set; }
         public string Link { get; set; }
@@ -64,35 +64,37 @@ namespace ConsoleTestApp
                         var postItem = new PostItem();
 
                         XmlNode rssSubNode = rssNode.SelectSingleNode("title");
-                        var title = rssSubNode != null ? rssSubNode.InnerText : "";
+                        var title = rssSubNode?.InnerText;
 
                         rssSubNode = rssNode.SelectSingleNode("link");
-                        var link = rssSubNode != null ? rssSubNode.InnerText : "";
+                        var link = rssSubNode?.InnerText;
 
                         rssSubNode = rssNode.SelectSingleNode("description");
-                        var description = rssSubNode != null ? rssSubNode.InnerText : "";
+                        var description = rssSubNode?.InnerText;
 
                         rssSubNode = rssNode.SelectSingleNode("pubDate");
-                        var publishDate = rssSubNode != null ? rssSubNode.InnerText : "";
+                        var publishDate = rssSubNode?.InnerText;
 
                         rssSubNode = rssNode.SelectSingleNode("//dc:creator", namespaces);
-                        var creator = rssSubNode != null ? rssSubNode.InnerText : "";
+                        var creator = rssSubNode?.InnerText;
 
-                        var contentNode = rssNode.SelectSingleNode("//content:encoded", namespaces);
-                        var content = contentNode != null ? contentNode.InnerText : "";
+                        rssSubNode = rssNode.SelectSingleNode("//content:encoded", namespaces);
+                        var content = rssSubNode?.InnerText;
 
                         //Handling categories list
                         var categories = rssNode.SelectNodes("category");
                         foreach (XmlNode cat in categories)
                         {
-                            postItem.Categories.Add(cat.InnerText);
+                            postItem.Categories.Add(cat?.InnerText);
                         }
+
                         postItem.Title = title;
                         postItem.Creator = creator;
                         postItem.Link = link;
                         postItem.Description = description;
-                        postItem.PublishDate = publishDate;
+                        postItem.PublishDate = Convert.ToDateTime(publishDate);
                         postItem.Content = content;
+
                         postItems.Add(postItem);
                     }
                 }
